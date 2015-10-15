@@ -1,0 +1,53 @@
+html{
+	width: 100%;
+	height: 100%;
+}
+body{
+	width: 100%;
+	height: 100%;
+	margin: 0px 0px 0px 0px;
+}
+#search{
+	position: absolute;
+	background-color: rgba(255,220,100,0.6);
+	left: 0px;
+	top: 0%;
+	height: 5%;
+	min-height: 40px;
+	width: 100%;
+	min-width: 400px;
+}
+.search_form{
+  height:70%;
+  padding: 0px;
+  margin: 0 auto;
+  font-size:1em;
+}
+.search_field{
+  min-width: 200px;
+  width:80%;
+  height:100%;
+  font-size:2em;
+}
+#goroku{
+	height: 100%;
+	overflow: hidden;
+	background-color: #222;
+}
+#panel-container{
+}
+.panel{
+	height: 100px;
+	width: 300px;
+	margin: 0 auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: #eef;
+	border: solid;
+	border-color: #000;
+	opacity: 0.3;
+}
+#inner-container{
+  padding-top: 300px;
+  padding-bottom: 300px;
+}
