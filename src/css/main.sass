@@ -1,0 +1,63 @@
+@mixin arrow_box($h: 150px, $w: 500px, $pos: left, $size: 20px, $color: #88b7d5, $border_with: 4px, $border_color: #c2e1f5)
+  $pos1: left
+  $pos2: top
+  @if $pos == left or $pos == right
+    $pos1: if($pos == left, right, left)
+    $pos2: top
+  @else
+    $pos1: if($pos == top, bottom, top)
+    $pos2: left
+
+  .arrow_box
+    position: relative
+    background: $color
+    border: $border_with solid $border_color
+    margin-#{$pos}: $size + 10
+    display: inline-block
+    height: $h
+    width: $w - $size - 10
+    padding: 10px
+    color: white
+    font-size: 18px
+
+  .arrow_box:after, .arrow_box:before
+    #{$pos1}: 100%
+    #{$pos2}: 50%
+    border: solid transparent
+    content: " "
+    height: 0
+    width: 0
+    position: absolute
+    pointer-events: none
+
+  .arrow_box:after
+    border-#{$pos1}-color: $color
+    border-width: $size
+    margin-#{$pos2}: -$size
+
+  .arrow_box:before
+    border-#{$pos1}-color: $border_color
+    border-width: $size + 6
+    margin-#{$pos2}: -$size - 6
+
+@mixin mobile
+  @media only screen and (max-width: 700px)
+    @content
+
+@mixin nomal
+  @media only screen and (min-width: 701px)
+    @content
+
+.contents
+  margin: 20px
+
+  .title
+    text-align: center
+
+  .question
+    width: 300px
+    margin: 0 auto
+    @include arrow_box(80px, 220px, left)
+    img
+      float: left
+      width: 80px

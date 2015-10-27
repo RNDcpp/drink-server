@@ -9,5 +9,6 @@ class Head < ActiveRecord::Base
     file_name = File.expand_path("../public/img/head_icon/#{self.id}.png",__FILE__)
     data = File.open(file_name,'w')
     data.write(Base64.decode64(base64_file))
-  end 
+    data.close
+  end
 end

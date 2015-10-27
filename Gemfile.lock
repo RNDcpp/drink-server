@@ -53,6 +53,3 @@ DEPENDENCIES
   sinatra
   sinatra-contrib
   sqlite3
-
-BUNDLED WITH
-   1.10.5

@@ -13,19 +13,22 @@ public
     erb :index
   end
   delete '/head' do
-    params = JSON.parse(request.body.read,quirks_mode: true)
-    @head = Head.find_by(id:params['id'].to_i)
-    @head.destroy
+    response = Hash.new
+    @head = Head.find_by(id: params['id'].to_i)
+    if @head.destroy
+      response[:result] = "success"
+    else
+      response[:result] = "faild"
+    end
+    response.to_json
   end
   get '/head' do
     Head.all.to_json
-  end 
+  end
   put '/head' do
     response = Hash.new
     begin
-      params = JSON.parse(request.body.read,quirks_mode: true)
-      params['id']
-      @head = Head.find_by(id:params['id'].to_i)
+      @head = Head.find_by(id: params['id'].to_i)
       if(@head)
         @head.name = params['name']
         @head.upload_file(params['data']) if params['data']
@@ -43,15 +46,16 @@ public
 
   post '/head' do
     response=Hash.new
-    params = JSON.parse(request.body.read)
-    if Head.create(params)
+    begin
+      @head = Head.create!(name: params['name'])
+      @head.upload_file(params['data']) if params['data']
       response[:result] = "success"
-    else
-      response[:result] = "faild"
+    rescue => e
+      p response[:result] = e.message
+      logger.fatal(e)
     end
     response.to_json
   end
-
   get '/job' do
     @jobs = Job.all.order('created_at DESC').limit(100)
     @jobs.to_json
@@ -59,7 +63,6 @@ public
 
   post '/job' do
     response=Hash.new
-    params = JSON.parse(request.body.read)
     if Job.create(params)
       response[:result] = "success"
     else
@@ -70,8 +73,7 @@ public
 
   put '/job' do
     response=Hash.new
-    begin 
-      params = JSON.parse(request.body.read)
+    begin
       @job = Job.find_by(id:params["id"])
       @job.order = params["order"] if params["order"]
       @job.status = params["status"] if params["status"]
@@ -84,7 +86,6 @@ public
     response.to_json
   end
   delete '/job' do
-    params = JSON.parse(request.body.read,quirks_mode: true)
     @job = Job.find_by(id:params['id'].to_i)
     @job.destroy
   end
