@@ -25,7 +25,8 @@ var App = React.createClass({
 		this.setState({
 			type: target.type,
 			question: target.q,
-			answer: target.a
+			answer: target.a,
+			errors: []
 		});
 	},
 	setMessage(message) {
