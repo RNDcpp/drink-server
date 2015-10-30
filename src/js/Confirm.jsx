@@ -1,19 +1,33 @@
 var React = require('react');
+var $ = require('jquery');
 var {Button, ButtonToolbar} = require('react-bootstrap');
+var Head = require('./Head.jsx');
 
-var Confirm = React.createClass({
-	next() {
-		let data = this.props.data;
-		this.props.nextAction(Object.assign({}, data, data.next));
-	},
+var Confirm = {
 	cancel() {
-		this.props.nextAction(this.props.data.cancel);
+		this.props.fn.nextAction(this.props.data.cancel);
+	},
+	ajax(opt) {
+		var data = Object.assign({}, this.props.data, this.props.data.next);
+		$.ajax(opt).then((res) => {
+			if (res.result == "success") {
+				data.q = this.props.data.msg.success;
+			} else {
+				data.q = this.props.data.msg.fail;
+			}
+			this.props.fn.nextAction(data);
+		}).fail((err) => {
+			console.log(err);
+			data.q = this.props.data.msg.fail;
+			this.props.fn.nextAction(data);
+		});
 	},
 	render() {
 		return (
 			<div>
-				<img src={this.props.data.head.img} />
-				<span>{this.props.data.head.name}</span>
+				<ul>
+					{this.props.data.heads.map((ele, i) => <li key={i}><Head data={ele} /></li>)}
+				</ul>
 				<ButtonToolbar>
 					<Button onClick={this.cancel}>キャンセル</Button>
 					<Button onClick={this.next}>OK</Button>
@@ -21,6 +35,32 @@ var Confirm = React.createClass({
 			</div>
 		);
 	}
+};
+
+module.exports.DeleteHeadConfirm = React.createClass({
+	mixins: [Confirm],
+	next() {
+		this.ajax({
+			url: "/head",
+			dataType: "json",
+			method: "DELETE",
+			data: {
+				id: this.props.data.head.id
+			}
+		});
+	}
 });
 
-module.exports = Confirm;
+module.exports.AddJobConfirm = React.createClass({
+	mixins: [Confirm],
+	next() {
+		this.ajax({
+			url: "/job",
+			dataType: "json",
+			method: "POST",
+			data: {
+				order: this.props.data.heads.map((ele) => ele.id).reduce((pre, cur) => ((1 << (cur - 1)) + pre), 0)
+			}
+		});
+	}
+});

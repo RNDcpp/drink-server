@@ -1,12 +1,35 @@
-var $ = require('jquery');
 module.exports = {
 	init: {
 		type: "list",
 		q: "何がしたい？",
 		a: [
 			{
-				op: "order",
-				text: "飲み物を頼む"
+				op: "select_head",
+				q: "どのドリンクを注文する？",
+				mode: "multi",
+				next: {
+					op: "confirm",
+					mode: "add-job",
+					q: "これを注文しますか？",
+					next: {
+						op: "alert",
+						q: "この飲み物を注文したよ",
+						next: {
+							op: 'init'
+						}
+					},
+					cancel: {
+						op: "init"
+					},
+					msg: {
+						success: "この内容で注文したよ",
+						fail: "この内容での注文に失敗したよ"
+					}
+				},
+				cancel: {
+					op: "init"
+				},
+				text: "飲み物を注文する"
 			},
 			{
 				op: "job",
@@ -17,43 +40,6 @@ module.exports = {
 				text: "設定"
 			}
 		]
-	},
-	order: {
-		type: "list",
-		ajax(data) {
-			return $.ajax({
-				url: "/head",
-				dataType: "json",
-				method: "GET"
-			}).then((res) => {
-				this.q = "どれにする？";
-				// TODO: 未実装
-//				this.a = res.map((ele) => {
-//					return {
-//						op:
-//						ele.
-//				});
-				this.a = [
-					{
-						op: "init",
-						text: "キャンセル"
-					}
-				];
-			}, (err) => {
-				console.log(err);
-				this.q = "取得に失敗したよ";
-				this.a = [
-					{
-						op: "order",
-						text: "再取得"
-					},
-					{
-						op: "init",
-						text: "キャンセル"
-					}
-				];
-			});
-		}
 	},
 	setting: {
 		type: "list",
@@ -66,23 +52,39 @@ module.exports = {
 			{
 				op: "select_head",
 				q: "どのドリンクを編集する？",
+				mode: "single",
 				next: {
 					op: "edit_head"
+				},
+				cancel: {
+					op: "setting"
 				},
 				text: "ドリンクの編集"
 			},
 			{
 				op: "select_head",
 				q: "どのドリンクを削除する？",
+				mode: "single",
 				next: {
 					op: "confirm",
 					q: "これを削除しますか？",
+					mode: "delete-head",
 					next: {
-						op: "delete_head"
+						op: "alert",
+						next: {
+							op: "init"
+						}
 					},
 					cancel: {
-						op: "init"
+						op: "setting"
+					},
+					msg: {
+						success: "これを削除したよ",
+						fail: "これの削除に失敗したよ"
 					}
+				},
+				cancel: {
+					op: "setting"
 				},
 				text: "ドリンクの削除"
 			},
@@ -96,10 +98,6 @@ module.exports = {
 		type: "drink-form",
 		q: "追加するドリンクの情報を入力してね",
 		a: {
-			head: {
-				img: '/img/noimage.png',
-				name: ""
-			},
 			next: {
 				op: "alert",
 				q: "飲み物を追加したよ",
@@ -107,7 +105,9 @@ module.exports = {
 					op: 'init'
 				}
 			},
-			retry_msg: "送信に失敗したよ"
+			msg: {
+				retry: "送信に失敗したよ"
+			}
 		}
 	},
 	edit_head: {
@@ -121,90 +121,36 @@ module.exports = {
 						op: 'init'
 					}
 				},
-				retry_msg: "送信に失敗したよ"
+				msg: {
+					retry: "送信に失敗したよ"
+				}
 			}, data);
 		},
 		q: "ドリンクの情報を編集してね"
 	},
 	select_head: {
-		type: "list",
-		ajax(data) {
-			return $.ajax({
-				url: "/head",
-				dataType: "json",
-				method: "GET"
-			}).then((res) => {
-				this.q = data.q;
-				this.a = res.map((ele) => {
-					return Object.assign({
-						head: {
-							id: ele.id,
-							name: ele.name,
-							img: `img/head_icon/${ele.id}.png`
-						}
-					}, data.next);
-				}).concat({
-					op: "init",
-					text: "キャンセル"
-				});
-			}, (err) => {
-				console.log(err);
-				this.q = "取得に失敗したよ";
-				this.a = [
-					Object.assign({}, data, {
-						op: "select_head",
-						text: "再取得"
-					}),
-					{
-						op: "init",
-						text: "キャンセル"
-					}
-				];
-			});
-		}
-	},
-	delete_head: {
-		type: "list",
-		ajax(data) {
-			return $.ajax({
-				url: "/head",
-				dataType: "json",
-				method: "DELETE",
-				data: {
-					id: data.head.id
-				}
-			}).then((res) => {
-				if (res.result == "success") {
-					this.q = `${data.head.name}を削除したよ`;
-				} else {
-					this.q = `${data.head.name}の削除に失敗したよ`;
-				}
-			}).fail((err) => {
-				console.log(err);
-				this.q = `${data.head.name}の削除に失敗したよ`;
-			});
-		},
-		a: [
-			{
-			op: "init",
-			text: "OK"
-			}
-		]
-	},
-	alert: {
-		type: "list",
+		type: "head-list",
 		set(data) {
 			this.q = data.q;
-			this.a = [
-				Object.assign({}, data, data.next, {
-					text: "OK"
-				})
-			];
+			this.a = Object.assign({
+				msg: {
+					single_select_error: "一つ選んでね",
+					multi_select_error: "一つ以上選んでね",
+					retry: "取得に失敗したよ"
+				}
+			}, data);
+		}
+	},
+	alert: {
+		type: "alert",
+		set(data) {
+			this.q = data.q;
+			this.a = Object.assign({}, data, data.next);
 		}
 	},
 	confirm: {
-		type: "confirm",
 		set(data) {
+			this.type = `${data.mode}-confirm`;
 			this.q = data.q;
 			this.a = data;
 		}

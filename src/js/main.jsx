@@ -3,7 +3,9 @@ var ReactDOM = require('react-dom');
 var dialog = require('./dialog.js');
 var Choice = require('./Choice.jsx');
 var ImageForm = require('./ImageForm.jsx');
-var Confirm = require('./Confirm.jsx');
+var HeadList = require('./HeadList.jsx');
+var Alert = require('./Alert.jsx');
+var {DeleteHeadConfirm, AddJobConfirm} = require('./Confirm.jsx');
 
 var App = React.createClass({
 	getInitialState() {
@@ -14,19 +16,15 @@ var App = React.createClass({
 		};
 	},
 	nextAction(data) {
-		(async () => {
-			var target = dialog[data.op];
-			if ('ajax' in target) {
-				await target.ajax(data);
-			} else if ('set' in target) {
-				target.set(data);
-			}
-			this.setState({
-				type: target.type,
-				question: target.q,
-				answer: target.a
-			});
-		})();
+		var target = dialog[data.op];
+		if ('set' in target) {
+			target.set(data);
+		}
+		this.setState({
+			type: target.type,
+			question: target.q,
+			answer: target.a
+		});
 	},
 	setMessage(message) {
 		this.setState({
@@ -35,6 +33,10 @@ var App = React.createClass({
 	},
 	render() {
 		var answer;
+		var fn = {
+			nextAction: this.nextAction,
+			setMessage: this.setMessage
+		};
 		switch(this.state.type) {
 			case "list":
 				answer = [];
@@ -43,11 +45,20 @@ var App = React.createClass({
 				});
 				answer = <ul>{answer}</ul>;
 				break;
-			case "drink-form":
-				answer = <ImageForm nextAction={this.nextAction} data={this.state.answer} />;
+			case "head-list":
+				answer = <HeadList fn={fn} data={this.state.answer} />;
 				break;
-			case "confirm":
-				answer = <Confirm nextAction={this.nextAction} data={this.state.answer} />;
+			case "drink-form":
+				answer = <ImageForm fn={fn} data={this.state.answer} />;
+				break;
+			case "delete-head-confirm":
+				answer = <DeleteHeadConfirm fn={fn} data={this.state.answer} />;
+				break;
+			case "add-job-confirm":
+				answer = <AddJobConfirm fn={fn} data={this.state.answer} />;
+				break;
+			case "alert":
+				answer = <Alert fn={fn} data={this.state.answer} />;
 				break;
 		}
 		return (

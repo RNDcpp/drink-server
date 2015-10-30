@@ -2,11 +2,15 @@ var React = require('react');
 var {Input, Button, ButtonToolbar} = require('react-bootstrap');
 var Cropper = require('react-cropper');
 var $ = require('jquery');
+var default_head = {
+	img: '/img/noimage.png',
+	name: ""
+};
 
-var ImageForm = React.createClass({
+module.exports = React.createClass({
 	getInitialState() {
 		return {
-			src: this.props.data.head.img,
+			src: (this.props.data.head || default_head).img,
 		};
 	},
 	_onChange(e) {
@@ -40,25 +44,28 @@ var ImageForm = React.createClass({
 					.toDataURL('image/png').replace(/^.*,/, '')
 			}
 		}
-		if ('id' in this.props.data.head) {
+		if ('head' in this.props.data) {
 			option.method = "PUT";
 			option.data.id = this.props.data.head.id;
 		}
 		$.ajax(option).then((data) => {
 			if (data.result == "success") {
-				this.props.nextAction(this.props.data.next);
+				this.props.fn.nextAction(this.props.data.next);
 			} else {
-				this.props.setMessage(this.props.data.retry_msg);
+				this.props.fn.setMessage(this.props.data.msg.retry);
 			}
+		}, (err) => {
+			console.log(err);
+			this.props.fn.setMessage(this.props.data.msg.retry);
 		});
 	},
 	cancel() {
-		this.props.nextAction({op: 'init'});
+		this.props.fn.nextAction({op: 'init'});
 	},
 	render() {
 		return (
 			<form>
-				<Input type="text" ref="name" label="名前" placeholder="名前を入力してください" defaultValue={this.props.data.head.name} />
+				<Input type="text" ref="name" label="名前" placeholder="名前を入力してください" defaultValue={(this.props.head || default_head).name} />
 				<Input type="file" label="画像ファイル" help="画像ファイルを選択してください" onChange={this._onChange} />
 				<Cropper
 					style={{height: 100, width: 100}}
@@ -90,5 +97,3 @@ var ImageForm = React.createClass({
 		);
 	}
 });
-
-module.exports = ImageForm;
