@@ -8,10 +8,18 @@ desc "Migrate database"
 task 'db:migrate' => :environment do
     ActiveRecord::Migrator.migrate('app/db/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
 end
+task 'db:migrate:drop' => :environment do
+    ActiveRecord::Migrator.down('app/db/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+end
+task 'db:migrate:reset' => ['db:migrate:drop','db:migrate']
 
 
 task :run => :environment do
-  Controller.run!  
+  setting = YAML.load(File.read('config/setting.yml'))
+  setting.each do |k,v|
+    ENV[k.to_s] = v.to_s
+  end
+  Controller.run!
 end
 
 task :environment do

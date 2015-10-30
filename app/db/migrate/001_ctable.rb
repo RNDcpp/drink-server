@@ -8,6 +8,7 @@ public
     end
     create_table :head do |t|
       t.column :name, :text
+      t.column :port, :integer,:null=>false
       t.timestamps :null => false
     end
   end
