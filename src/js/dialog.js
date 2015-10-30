@@ -13,7 +13,6 @@ module.exports = {
 					q: "これを注文しますか？",
 					next: {
 						op: "alert",
-						q: "この飲み物を注文したよ",
 						next: {
 							op: 'init'
 						}
@@ -93,6 +92,33 @@ module.exports = {
 				text: "キャンセル"
 			}
 		]
+	},
+	job: {
+		type: "job-list",
+		q: "現在のジョブ一覧だよ",
+		a: {
+			next: {
+				op: "confirm",
+				mode: "delete-job",
+				q: "このジョブを消しますか？",
+				next: {
+					op: "alert",
+					next: {
+						op: 'job'
+					}
+				},
+				cancel: {
+					op: "job"
+				},
+				msg: {
+					success: "このジョブを消したよ",
+					fail: "このジョブの削除に失敗したよ"
+				}
+			},
+			cancel: {
+				op: "init"
+			}
+		}
 	},
 	add_head: {
 		type: "drink-form",

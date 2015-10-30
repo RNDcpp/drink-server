@@ -4,8 +4,9 @@ var dialog = require('./dialog.js');
 var Choice = require('./Choice.jsx');
 var HeadForm = require('./HeadForm.jsx');
 var HeadList = require('./HeadList.jsx');
+var JobList = require('./JobList.jsx');
 var Alert = require('./Alert.jsx');
-var {DeleteHeadConfirm, AddJobConfirm} = require('./Confirm.jsx');
+var {DeleteHeadConfirm, AddJobConfirm, DeleteJobConfirm} = require('./Confirm.jsx');
 
 var App = React.createClass({
 	getInitialState() {
@@ -55,6 +56,9 @@ var App = React.createClass({
 			case "head-list":
 				answer = <HeadList fn={fn} data={this.state.answer} />;
 				break;
+			case "job-list":
+				answer = <JobList fn={fn} data={this.state.answer} />;
+				break;
 			case "drink-form":
 				answer = <HeadForm fn={fn} data={this.state.answer} />;
 				break;
@@ -63,6 +67,9 @@ var App = React.createClass({
 				break;
 			case "add-job-confirm":
 				answer = <AddJobConfirm fn={fn} data={this.state.answer} />;
+				break;
+			case "delete-job-confirm":
+				answer = <DeleteJobConfirm fn={fn} data={this.state.answer} />;
 				break;
 			case "alert":
 				answer = <Alert fn={fn} data={this.state.answer} />;
