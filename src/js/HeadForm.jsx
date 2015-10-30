@@ -4,7 +4,8 @@ var Cropper = require('react-cropper');
 var $ = require('jquery');
 var default_head = {
 	img: '/img/noimage.png',
-	name: ""
+	name: "",
+	port: ""
 };
 
 module.exports = React.createClass({
@@ -40,6 +41,7 @@ module.exports = React.createClass({
 			dataType: "json",
 			data: {
 				name: this.refs.name.getValue(),
+				port: this.refs.port.getValue(),
 				data: this.refs.cropper.getCroppedCanvas({width: 100, height: 100})
 					.toDataURL('image/png').replace(/^.*,/, '')
 			}
@@ -50,12 +52,15 @@ module.exports = React.createClass({
 		}
 		$.ajax(option).then((data) => {
 			if (data.result == "success") {
+				this.props.fn.setErrors([]);
 				this.props.fn.nextAction(this.props.data.next);
 			} else {
+				this.props.fn.setErrors(data.message);
 				this.props.fn.setMessage(this.props.data.msg.retry);
 			}
 		}, (err) => {
 			console.log(err);
+			this.props.fn.setErrors(["server error"]);
 			this.props.fn.setMessage(this.props.data.msg.retry);
 		});
 	},
@@ -65,7 +70,8 @@ module.exports = React.createClass({
 	render() {
 		return (
 			<form>
-				<Input type="text" ref="name" label="名前" placeholder="名前を入力してください" defaultValue={(this.props.head || default_head).name} />
+				<Input type="text" ref="name" label="名前" placeholder="名前を入力してください" defaultValue={(this.props.data.head || default_head).name} />
+				<Input type="number" ref="port" label="番号" placeholder="番号を入力してください" defaultValue={(this.props.data.head || default_head).port} />
 				<Input type="file" label="画像ファイル" help="画像ファイルを選択してください" onChange={this._onChange} />
 				<Cropper
 					style={{height: 100, width: 100}}

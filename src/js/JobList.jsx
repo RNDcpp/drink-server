@@ -1,7 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
 var {Button, ButtonToolbar} = require('react-bootstrap');
-var Head = require('./Head.jsx');
+var Job = require('./Job.jsx');
 
 module.exports = React.createClass({
 	getInitialState() {
@@ -11,30 +11,30 @@ module.exports = React.createClass({
 		};
 	},
 	getHeadList() {
-		$.ajax({
+		return $.ajax({
 			url: "/head",
 			dataType: "json",
 			method: "GET"
 		}).then((res) => {
-			this.props.fn.setErrors([]);
 			this.setState({
 				heads: res.map((ele) => {
 					return {
 						id: ele.id,
-						port: ele.port,
 						name: ele.name,
-						img: `/img/head_icon/${ele.port}.png`
+						img: `img/head_icon/${ele.id}.png`
 					};
 				})
 			});
 		}, (err) => {
 			console.log(err);
-			this.props.fn.setErrors(["server error"]);
 			this.props.fn.setMessage(this.props.data.msg.retry);
 		});
 	},
 	componentDidMount() {
-		this.getHeadList();
+		async () => {
+			await this.getHeadList();
+			await this.getJobList();
+		}
 	},
 	select(data) {
 		var state = {selected: []};

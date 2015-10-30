@@ -8,11 +8,6 @@ module.exports = React.createClass({
 		this.props.fn.nextAction(data);
 	},
 	render() {
-		console.log(this.props.data);
-		var heads = null;
-		if ("heads" in this.props.data) {
-			heads = this.props.data.heads.map((ele, i) => <li key={i}><Head data={ele} /></li>);
-		}
 		return (
 			<div>
 				{() => {

@@ -59,7 +59,7 @@ module.exports.AddJobConfirm = React.createClass({
 			dataType: "json",
 			method: "POST",
 			data: {
-				order: this.props.data.heads.map((ele) => ele.id).reduce((pre, cur) => ((1 << (cur - 1)) + pre), 0)
+				order: this.props.data.heads.map((ele) => ele.port).reduce((pre, cur) => ((1 << (cur - 1)) + pre), 0)
 			}
 		});
 	}

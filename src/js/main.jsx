@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var dialog = require('./dialog.js');
 var Choice = require('./Choice.jsx');
-var ImageForm = require('./ImageForm.jsx');
+var HeadForm = require('./HeadForm.jsx');
 var HeadList = require('./HeadList.jsx');
 var Alert = require('./Alert.jsx');
 var {DeleteHeadConfirm, AddJobConfirm} = require('./Confirm.jsx');
@@ -12,7 +12,8 @@ var App = React.createClass({
 		return {
 			type: dialog.init.type,
 			question: dialog.init.q,
-			answer: dialog.init.a
+			answer: dialog.init.a,
+			errors: []
 		};
 	},
 	nextAction(data) {
@@ -31,11 +32,17 @@ var App = React.createClass({
 			question: message
 		});
 	},
+	setErrors(errors) {
+		this.setState({
+			errors: errors
+		})
+	},
 	render() {
 		var answer;
 		var fn = {
 			nextAction: this.nextAction,
-			setMessage: this.setMessage
+			setMessage: this.setMessage,
+			setErrors: this.setErrors
 		};
 		switch(this.state.type) {
 			case "list":
@@ -49,7 +56,7 @@ var App = React.createClass({
 				answer = <HeadList fn={fn} data={this.state.answer} />;
 				break;
 			case "drink-form":
-				answer = <ImageForm fn={fn} data={this.state.answer} />;
+				answer = <HeadForm fn={fn} data={this.state.answer} />;
 				break;
 			case "delete-head-confirm":
 				answer = <DeleteHeadConfirm fn={fn} data={this.state.answer} />;
@@ -71,6 +78,11 @@ var App = React.createClass({
 					<div className="arrow_box">
 						{this.state.question}
 					</div>
+				</div>
+				<div className="errors">
+					<ul>
+						{this.state.errors.map((ele, i) => (<li key={i}>{ele}</li>))}
+					</ul>
 				</div>
 				<div className="answer">
 					{answer}
