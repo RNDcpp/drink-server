@@ -36,3 +36,5 @@
     .contents .question img {
       float: left;
       width: 80px; }
+  .contents .answer .selected {
+    background: yellow; }
