@@ -91,7 +91,7 @@ public
 
 
   get '/job' do
-    @jobs = Job.where(status: 0).order('created_at DESC').limit(100)
+    @jobs = Job.where('status < 2').order('created_at ASC').limit(100)
     @jobs.to_json
   end
 

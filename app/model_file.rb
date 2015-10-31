@@ -8,7 +8,7 @@ class Job < ActiveRecord::Base
     if (self.order >= (1 << ENV["port_maximum"].to_i)) or (self.order < 1)
       ret = false
     else
-      self.order.to_s(2).split().each.with_index(1) do |e,idx|
+      self.order.to_s(2).split().reverse_each.with_index(1) do |e,idx|
         ret = (Head.find_by(port: idx)!=nil) if (e =='1')
       end
     end
