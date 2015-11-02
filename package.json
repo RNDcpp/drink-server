@@ -20,6 +20,7 @@
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^1.4.2",
     "jquery": "^2.1.4",
+    "moment": "^2.10.6",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.1",
     "react-cropper": "^0.5.0",
