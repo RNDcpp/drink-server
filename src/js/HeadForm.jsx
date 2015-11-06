@@ -74,7 +74,6 @@ module.exports = React.createClass({
 				<Input type="number" ref="port" label="番号" placeholder="番号を入力してください" defaultValue={(this.props.data.head || default_head).port} />
 				<Input type="file" label="画像ファイル" help="画像ファイルを選択してください" onChange={this._onChange} />
 				<Cropper
-					style={{height: 100, width: 100}}
 					aspectRatio={1}
 					guides={false}
 					center={false}
