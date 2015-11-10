@@ -6,13 +6,14 @@ module.exports = React.createClass({
 			onClick() {}
 		};
 	},
-	onClick(e) {
+	onClick() {
 		this.props.onClick(this.props.data);
 	},
 	render() {
 		return (
-			<div className={this.props.className} onClick={this.onClick}>
-				<img src={this.props.data.img} /><span>{this.props.data.name}</span>
+			<div className="head-container" onClick={this.onClick}>
+				<img className="head-img" src={this.props.data.img} />
+				<span className="head-name">{this.props.data.name}</span>
 			</div>
 		);
 	}

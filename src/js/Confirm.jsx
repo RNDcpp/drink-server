@@ -1,7 +1,6 @@
 var React = require('react');
 var $ = require('jquery');
-var {Button, ButtonToolbar} = require('react-bootstrap');
-var Head = require('./Head.jsx');
+var HeadList = require('./HeadList.jsx');
 var Job = require('./Job.jsx');
 
 var confirm = {
@@ -12,10 +11,10 @@ var confirm = {
 		return (
 			<div>
 				{this.content()}
-				<ButtonToolbar>
-					<Button onClick={this.cancel}>キャンセル</Button>
-					<Button onClick={this.next}>OK</Button>
-				</ButtonToolbar>
+				<ul className="choice-container-col">
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.cancel}>キャンセル</li>
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.next}>OK</li>
+				</ul>
 			</div>
 		);
 	}
@@ -42,9 +41,7 @@ var ajax = {
 var heads = {
 	content() {
 		return (
-			<ul>
-				{this.props.data.heads.map((ele, i) => <li key={i}><Head data={ele} /></li>)}
-			</ul>
+			<HeadList heads={this.props.data.heads} />
 		);
 	}
 }

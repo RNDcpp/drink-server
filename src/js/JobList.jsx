@@ -1,6 +1,5 @@
 var React = require('react');
 var $ = require('jquery');
-var {Button, ButtonToolbar} = require('react-bootstrap');
 var Job = require('./Job.jsx');
 
 module.exports = React.createClass({
@@ -57,13 +56,13 @@ module.exports = React.createClass({
 	render() {
 		return (
 			<div>
-				<ul>
-					{this.state.jobs.map((data, i) => (<li key={i}>{i+1}: <Job data={data} onClick={this.select}/></li>))}
+				<ol className="job-list">
+					{this.state.jobs.map((data, i) => (<li key={i}><Job data={data} onClick={this.select}/></li>))}
+				</ol>
+				<ul className="choice-container-col">
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.cancel}>戻る</li>
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.getData}>再取得</li>
 				</ul>
-				<ButtonToolbar>
-					<Button onClick={this.cancel}>戻る</Button>
-					<Button onClick={this.getData}>再取得</Button>
-				</ButtonToolbar>
 			</div>
 		);
 	}

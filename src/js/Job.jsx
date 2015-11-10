@@ -1,10 +1,15 @@
 var moment = require('moment');
 var React = require('react');
-var Head = require('./Head.jsx');
+var HeadList = require('./HeadList.jsx');
 
 var msg = {
 	"0": "準備中",
 	"1": "準備完了"
+}
+
+var className = {
+	"0": "job-wait",
+	"1": "job-ready"
 }
 
 moment.locale('ja', {
@@ -36,12 +41,10 @@ module.exports = React.createClass({
 	},
 	render() {
 		return (
-			<div onClick={this.onClick}>
-				<ul>
-					{this.props.data.heads.map((data, i) => (<li key={i}><Head data={data} /></li>))}
-				</ul>
-				<div>{moment(this.props.data.time).fromNow()}</div>
-				<div>{msg[this.props.data.status]}</div>
+			<div className="job-container" onClick={this.onClick}>
+				<HeadList heads={this.props.data.heads} />
+				<div className="job-info">{moment(this.props.data.time).fromNow()}</div>
+				<div className={"job-info ${className[this.props.data.status]}"} >{msg[this.props.data.status]}</div>
 			</div>
 		);
 	}

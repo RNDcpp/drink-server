@@ -6,8 +6,8 @@ module.exports = React.createClass({
 	},
 	render() {
 		return (
-			<li onClick={this.onClick}>
-				<div><span>{this.props.data.text}</span></div>
+			<li className="btn btn-block btn-lg btn-primary choice" onClick={this.onClick}>
+				{this.props.data.text}
 			</li>
 		);
 	}
