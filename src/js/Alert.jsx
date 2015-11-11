@@ -1,6 +1,5 @@
 var React = require('react');
-var {Button, ButtonToolbar} = require('react-bootstrap');
-var Head = require('./Head.jsx');
+var HeadList = require('./HeadList.jsx');
 
 module.exports = React.createClass({
 	next() {
@@ -12,11 +11,12 @@ module.exports = React.createClass({
 			<div>
 				{() => {
 					if ("heads" in this.props.data) {
-						var heads = this.props.data.heads.map((ele, i) => <li key={i}><Head data={ele} /></li>);
-						return <ul>{heads}</ul>;
+						return <HeadList heads={this.props.data.heads} />;
 					}
-				}()}
-				<Button onClick={this.next}>OK</Button>
+				 }()}
+				<ul className="choice-container-col">
+					<li className="btn btn-lg btn-primary choice-col c1-1" onClick={this.next}>OK</li>
+				</ul>
 			</div>
 		);
 	}

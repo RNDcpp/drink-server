@@ -90,14 +90,14 @@ module.exports = React.createClass({
 					src={this.state.src}
 					ref='cropper'
 					crop={this._crop} />
-				<ButtonToolbar>
-					<Button onClick={this.zoomOut}>-</Button>
-					<Button onClick={this.zoomIn}>+</Button>
-				</ButtonToolbar>
-				<ButtonToolbar>
-					<Button onClick={this.cancel}>キャンセル</Button>
-					<Button onClick={this.send}>送信</Button>
-				</ButtonToolbar>
+				<ul className="choice-container-col">
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.zoomOut}>-</li>
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.zoomIn}>+</li>
+				</ul>
+				<ul className="choice-container-col">
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.cancel}>キャンセル</li>
+					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.sned}>送信</li>
+				</ul>
 			</form>
 		);
 	}

@@ -1,9 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var dialog = require('./dialog.js');
-var Choice = require('./Choice.jsx');
+var ChoiceList = require('./ChoiceList.jsx');
 var HeadForm = require('./HeadForm.jsx');
-var HeadList = require('./HeadList.jsx');
+var SelectHead = require('./SelectHead.jsx');
 var JobList = require('./JobList.jsx');
 var Alert = require('./Alert.jsx');
 var {DeleteHeadConfirm, AddJobConfirm, DeleteJobConfirm} = require('./Confirm.jsx');
@@ -48,14 +48,10 @@ var App = React.createClass({
 		};
 		switch(this.state.type) {
 			case "list":
-				answer = [];
-				this.state.answer.forEach((data, i) => {
-					answer.push(<Choice key={i} data={data} onClick={this.nextAction} />);
-				});
-				answer = <ul>{answer}</ul>;
+				answer = <ChoiceList fn={fn} data={this.state.answer} />;
 				break;
 			case "head-list":
-				answer = <HeadList fn={fn} data={this.state.answer} />;
+				answer = <SelectHead fn={fn} data={this.state.answer} />;
 				break;
 			case "job-list":
 				answer = <JobList fn={fn} data={this.state.answer} />;
@@ -77,16 +73,10 @@ var App = React.createClass({
 				break;
 		}
 		return (
-			<div className="contents">
-				<div className="title">
-					<h1>DrinkServer</h1>
-				</div>
-				<div className="question clearfix">
-					<img src="/img/mascot.png" />
-					<div className="arrow_box">
-						{this.state.question}
-					</div>
-				</div>
+			<div className="message-box">
+				<span className="message-text">
+					{this.state.question}
+				</span>
 				<div className="errors">
 					<ul>
 						{this.state.errors.map((ele, i) => (<li key={i}>{ele}</li>))}
@@ -102,5 +92,5 @@ var App = React.createClass({
 
 ReactDOM.render(
 	<App />,
-	document.getElementById('main')
+	document.getElementById('chat-content')
 );

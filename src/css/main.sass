@@ -1,67 +1,134 @@
-@mixin arrow_box($h: 150px, $w: 500px, $pos: left, $size: 20px, $color: #88b7d5, $border_with: 4px, $border_color: #c2e1f5)
-  $pos1: left
-  $pos2: top
-  @if $pos == left or $pos == right
-    $pos1: if($pos == left, right, left)
-    $pos2: top
-  @else
-    $pos1: if($pos == top, bottom, top)
-    $pos2: left
-
-  .arrow_box
-    position: relative
-    background: $color
-    border: $border_with solid $border_color
-    margin-#{$pos}: $size + 10
-    display: inline-block
-    height: $h
-    width: $w - $size - 10
-    padding: 10px
-    color: white
-    font-size: 18px
-
-  .arrow_box:after, .arrow_box:before
-    #{$pos1}: 100%
-    #{$pos2}: 50%
-    border: solid transparent
-    content: " "
-    height: 0
-    width: 0
-    position: absolute
-    pointer-events: none
-
-  .arrow_box:after
-    border-#{$pos1}-color: $color
-    border-width: $size
-    margin-#{$pos2}: -$size
-
-  .arrow_box:before
-    border-#{$pos1}-color: $border_color
-    border-width: $size + 6
-    margin-#{$pos2}: -$size - 6
-
 @mixin mobile
-  @media only screen and (max-width: 700px)
+  @media only screen and (max-width: 990px)
     @content
 
 @mixin nomal
-  @media only screen and (min-width: 701px)
+  @media only screen and (min-width: 991px)
     @content
 
-.contents
-  margin: 20px
+body
+  html
+    background-color: rgba(10,10,10,0.9)
+    height: 100%
 
-  .title
-    text-align: center
+.header
+  background-color: rgba(90,90,200,0.9)
+  height: 10%
+  min-height: 5%
+  max-height: 10%
+  overflow: hidden
+  text-align: center
+  padding: 0.2em 0.2em
+  font-size: 2.3em
+  border-bottom: solid
+  border-bottom-color: rgba(200,200,200,0.3)
+  border-top: solid
+  border-top-color: rgba(200,200,250,0.4)
+  border-width: 3px
+  color: rgba(255,255,255,0.9)
 
-  .question
-    width: 300px
+.main-container
+  background-color: rgba(255,255,255,0.4)
+  box-shadow: 0px -120px 120px 0px rgba(0,0,0,0.2) inset
+  position: relative
+  height: 90%
+
+.mascot-panel
+  position: relative
+  overflow: visible
+  text-align: center
+  @include mobile
+    width: 100%
+    height: 20%
+  @include nomal
+    overflow: hidden
+    width: 30%
+    height: 100%
+    float: right
+
+  .mascot
+    position: relative
+    @include mobile
+      height: 200%
+    @include nomal
+      height: 100%
+
+.chat-panel
+  overflow: visible
+  font-size: 1.6em
+  text-align: center
+  position: relative
+  background-color: rgba(255,255,255,0.6)
+  @include mobile
+    width: 100%
+    height: 80%
+  @include nomal
+    width: 70%
+    height: 100%
+    float: right
+    background-color: rgba(255,255,255,0.0)
+
+  .message-box
     margin: 0 auto
-    @include arrow_box(80px, 220px, left)
-    img
-      float: left
-      width: 80px
+    margin-top: 50px
+    position: relative
+    display: inline-block
+    padding: 20px 20px
+    width: auto
+    min-width: 80%
+    min-height: 40%
+    max-height: 90%
+    height: auto
+    color: rgba(0,0,120,1.0)
+    border-radius: 90px
+    border: solid
+    border-width: 8px
+    border-color: rgba(120,120,120,1.0)
+    line-height: 40px
+    text-align: center
+    background: rgba(255,255,255,1.0)
+
+    &:before
+      content: ""
+      position: absolute
+      display: block
+      width: 0px
+      height: 0px
+      border-style: solid
+      border-color: transparent transparent transparent rgba(120,120,120,1.0)
+      @include mobile
+        top: -30px
+        right: 55px
+        margin-top: 0px
+        border-width: 30px 40px 0px 70px
+      @include nomal
+        bottom: 60px
+        right: -65px
+        margin-top: -30px
+        border-width: 45px 0 45px 65px
+    &:after
+      content: ""
+      position: absolute
+      display: block
+      width: 0px
+      height: 0px
+      border-style: solid
+      border-color: transparent transparent transparent rgba(255,255,255,1.0)
+      @include mobile
+        top: -20px
+        right: 55px
+        margin-top: 0px
+        border-width: 30px 40px 0px 63px
+      @include nomal
+        bottom: 70px
+        right: -50px
+        margin-top: -30px
+        border-width: 35px 0 35px 50px
 
   .answer
-    .selected
-      background: yellow
+    overflow: scroll
+    max-height: 70%
+    @import "choice"
+    @import "tile"
+    @import "head"
+    @import "job"
