@@ -2,6 +2,7 @@ var React = require('react');
 var $ = require('jquery');
 var HeadList = require('./HeadList.jsx');
 var Job = require('./Job.jsx');
+var Button = require('./Button.jsx');
 
 var confirm = {
 	cancel() {
@@ -12,8 +13,8 @@ var confirm = {
 			<div>
 				{this.content()}
 				<ul className="choice-container-col">
-					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.cancel}>キャンセル</li>
-					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.next}>OK</li>
+					<Button className="btn-primary c1-2" text="キャンセル" onClick={this.cancel}/>
+					<Button className="btn-primary c1-2" text="OK" onClick={this.next}/>
 				</ul>
 			</div>
 		);

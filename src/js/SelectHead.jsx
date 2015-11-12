@@ -1,6 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
 var HeadList = require('./HeadList.jsx');
+var Button = require('./Button.jsx');
 
 module.exports = React.createClass({
 	getInitialState() {
@@ -69,11 +70,11 @@ module.exports = React.createClass({
 			<div>
 				<HeadList heads={this.state.heads} onClick={this.select} comp={this.state.selected} />
 				<ul className="choice-container-col">
-					<li className="btn btn-lg btn-primary choice-col" onClick={this.cancel}>キャンセル</li>
-					<li className="btn btn-lg btn-primary choice-col" onClick={this.getHeadList}>再取得</li>
+					<Button className="btn-primary" text="キャンセル" onClick={this.cancel}/>
+					<Button className="btn-primary" text="再取得" onClick={this.getHeadList}/>
 					{() => {
 						if (this.state.heads.length > 0) {
-							return <li className="btn btn-block btn-lg btn-primary choice-col" onClick={this.next}>決定</li>;
+							return <Button className="btn-primary" text="決定" onClick={this.next}/>;
 						}
 					 }()}
 				</ul>

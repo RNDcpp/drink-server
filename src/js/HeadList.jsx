@@ -9,7 +9,9 @@ module.exports = React.createClass({
 		};
 	},
 	onClick(data) {
-		this.props.onClick(data);
+		if (this.props.onClick) {
+			this.props.onClick(data);
+		}
 	},
 	render() {
 		let base_class = ["tile"];
