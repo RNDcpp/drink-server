@@ -31,17 +31,9 @@ moment.locale('ja', {
 });
 
 module.exports = React.createClass({
-	getDefaultProps() {
-		return {
-			onClick() {}
-		};
-	},
-	onClick(e) {
-		this.props.onClick(this.props.data);
-	},
 	render() {
 		return (
-			<div className="job-container" onClick={this.onClick}>
+			<div className="job-container">
 				<HeadList heads={this.props.data.heads} />
 				<div className="job-info">{moment(this.props.data.time).fromNow()}</div>
 				<div className={"job-info ${className[this.props.data.status]}"} >{msg[this.props.data.status]}</div>

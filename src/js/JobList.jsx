@@ -1,6 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
 var Job = require('./Job.jsx');
+var Button = require('./Button.jsx');
 
 module.exports = React.createClass({
 	getInitialState() {
@@ -56,12 +57,19 @@ module.exports = React.createClass({
 	render() {
 		return (
 			<div>
-				<ol className="job-list">
-					{this.state.jobs.map((data, i) => (<li key={i}><Job data={data} onClick={this.select}/></li>))}
+				<ol className="job-list scroll">
+					{this.state.jobs.map((data, i) => (
+						<li className="frame" key={i}>
+							<Job data={data} />
+							<ul className="choice-container-col">
+								<Button className="btn-danger c1-1" text="削除" data={data} onClick={this.select}/>
+							</ul>
+						</li>
+					 ))}
 				</ol>
 				<ul className="choice-container-col">
-					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.cancel}>戻る</li>
-					<li className="btn btn-lg btn-primary choice-col c1-2" onClick={this.getData}>再取得</li>
+					<Button className="btn-primary c1-2" text="戻る" onClick={this.cancel}/>
+					<Button className="btn-primary c1-2" text="再取得" onClick={this.getData}/>
 				</ul>
 			</div>
 		);

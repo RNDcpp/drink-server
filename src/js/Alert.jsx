@@ -1,5 +1,6 @@
 var React = require('react');
 var HeadList = require('./HeadList.jsx');
+var Button = require('./Button.jsx');
 
 module.exports = React.createClass({
 	next() {
@@ -15,7 +16,7 @@ module.exports = React.createClass({
 					}
 				 }()}
 				<ul className="choice-container-col">
-					<li className="btn btn-lg btn-primary choice-col c1-1" onClick={this.next}>OK</li>
+					<Button className="btn-primary c1-1" text="OK" onClick={this.next}/>
 				</ul>
 			</div>
 		);
