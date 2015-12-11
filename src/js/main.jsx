@@ -7,21 +7,38 @@ var SelectHead = require('./SelectHead.jsx');
 var JobList = require('./JobList.jsx');
 var Alert = require('./Alert.jsx');
 var {DeleteHeadConfirm, AddJobConfirm, DeleteJobConfirm} = require('./Confirm.jsx');
+var $ = require('jquery');
 
 var App = React.createClass({
 	getInitialState() {
 		return {
-			type: dialog.init.type,
-			question: dialog.init.q,
-			answer: dialog.init.a,
+			type: "",
+			question: "Loading...",
+			answer: [],
 			errors: []
 		};
 	},
+	componentDidMount() {
+		$.ajax({
+			url: "/data/locale.json",
+			dataType: "json",
+			method: "GET"
+		}).then((res) => {
+			dialog.setLocale(res);
+			if (this.isMounted()) {
+				this.nextAction({op: "init"});
+			}
+		}, (err) => {
+			console.log(err);
+			if (this.isMounted()) {
+				this.setErrors(["server error"]);
+				this.setMessage("Failed to load data.");
+			}
+		});
+	},
 	nextAction(data) {
+		dialog.setBefore(data);
 		var target = dialog[data.op];
-		if ('set' in target) {
-			target.set(data);
-		}
 		this.setState({
 			type: target.type,
 			question: target.q,
