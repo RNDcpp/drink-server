@@ -70,11 +70,11 @@ module.exports = React.createClass({
 			<div>
 				<HeadList heads={this.state.heads} onClick={this.select} comp={this.state.selected} />
 				<ul className="choice-container-col">
-					<Button className="btn-primary" text="キャンセル" onClick={this.cancel}/>
-					<Button className="btn-primary" text="再取得" onClick={this.getHeadList}/>
+					<Button className="btn-success" text="キャンセル" onClick={this.cancel}/>
+					<Button className="btn-success" text="再取得" onClick={this.getHeadList}/>
 					{() => {
 						if (this.state.heads.length > 0) {
-							return <Button className="btn-primary" text="決定" onClick={this.next}/>;
+							return <Button className="btn-success" text="決定" onClick={this.next}/>;
 						}
 					 }()}
 				</ul>

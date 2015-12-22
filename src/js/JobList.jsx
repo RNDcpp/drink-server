@@ -68,8 +68,8 @@ module.exports = React.createClass({
 					 ))}
 				</ol>
 				<ul className="choice-container-col">
-					<Button className="btn-primary c1-2" text="戻る" onClick={this.cancel}/>
-					<Button className="btn-primary c1-2" text="再取得" onClick={this.getData}/>
+					<Button className="btn-success c1-2" text="戻る" onClick={this.cancel}/>
+					<Button className="btn-success c1-2" text="再取得" onClick={this.getData}/>
 				</ul>
 			</div>
 		);

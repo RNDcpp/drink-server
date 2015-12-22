@@ -7,7 +7,7 @@ module.exports = React.createClass({
 			<ul className="choice-container">
 			{
 				this.props.data.map((data, i) => {
-					return (<Button key={i} className="btn-block btn-primary" text={data.text} data={data} onClick={this.props.fn.nextAction} />);
+					return (<Button key={i} className="btn-block btn-success" text={data.text} data={data} onClick={this.props.fn.nextAction} />);
 				})
 			}
 			</ul>

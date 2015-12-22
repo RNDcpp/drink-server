@@ -16,7 +16,7 @@ module.exports = React.createClass({
 					}
 				 }()}
 				<ul className="choice-container-col">
-					<Button className="btn-primary c1-1" text="OK" onClick={this.next}/>
+					<Button className="btn-success c1-1" text="OK" onClick={this.next}/>
 				</ul>
 			</div>
 		);

@@ -13,8 +13,8 @@ var confirm = {
 			<div>
 				{this.content()}
 				<ul className="choice-container-col">
-					<Button className="btn-primary c1-2" text="キャンセル" onClick={this.cancel}/>
-					<Button className="btn-primary c1-2" text="OK" onClick={this.next}/>
+					<Button className="btn-success c1-2" text="キャンセル" onClick={this.cancel}/>
+					<Button className="btn-success c1-2" text="OK" onClick={this.next}/>
 				</ul>
 			</div>
 		);
