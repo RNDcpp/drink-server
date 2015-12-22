@@ -1,184 +1,200 @@
 module.exports = {
-	init: {
-		type: "list",
-		q: "何がしたい？",
-		a: [
-			{
-				op: "select_head",
-				q: "どのドリンクを注文する？",
-				mode: "multi",
-				next: {
-					op: "confirm",
-					mode: "add-job",
-					q: "これを注文しますか？",
+	locale: null,
+	before: null,
+	setLocale(data) {
+		this.locale = data;
+	},
+	setBefore(data) {
+		this.before = data;
+	},
+	get init() {
+		return {
+			type: "list",
+			q: this.locale.question.which.do,
+			a: [
+				{
+					op: "select_head",
+					q: this.locale.question.which.drink.order,
+					mode: "multi",
 					next: {
-						op: "alert",
+						op: "confirm",
+						mode: "add-job",
+						q: this.locale.question.is.order_this,
 						next: {
-							op: 'init'
+							op: "alert",
+							next: {
+								op: 'init'
+							}
+						},
+						cancel: {
+							op: "init"
+						},
+						msg: {
+							success: this.locale.message.success.job.order,
+							fail: this.locale.message.fail.job.order
 						}
 					},
 					cancel: {
 						op: "init"
 					},
-					msg: {
-						success: "この内容で注文したよ",
-						fail: "この内容での注文に失敗したよ"
-					}
+					text: this.locale.choice.drink.order
 				},
-				cancel: {
-					op: "init"
+				{
+					op: "job",
+					text: this.locale.choice.see_jobs
 				},
-				text: "飲み物を注文する"
-			},
-			{
-				op: "job",
-				text: "ジョブを見る"
-			},
-			{
-				op: "setting",
-				text: "設定"
-			}
-		]
+				{
+					op: "setting",
+					text: this.locale.choice.settings
+				}
+			]
+		}
 	},
-	setting: {
-		type: "list",
-		q: "何を設定する？",
-		a: [
-			{
-				op: "add_head",
-				text: "ドリンクの追加"
-			},
-			{
-				op: "select_head",
-				q: "どのドリンクを編集する？",
-				mode: "single",
-				next: {
-					op: "edit_head"
+	get setting() {
+		return {
+			type: "list",
+			q: this.locale.question.which.setting,
+			a: [
+				{
+					op: "add_head",
+					text: this.locale.choice.drink.add
 				},
-				cancel: {
-					op: "setting"
-				},
-				text: "ドリンクの編集"
-			},
-			{
-				op: "select_head",
-				q: "どのドリンクを削除する？",
-				mode: "single",
-				next: {
-					op: "confirm",
-					q: "これを削除しますか？",
-					mode: "delete-head",
+				{
+					op: "select_head",
+					q: this.locale.question.which.drink.edit,
+					mode: "single",
 					next: {
-						op: "alert",
+						op: "edit_head"
+					},
+					cancel: {
+						op: "setting"
+					},
+					text: this.locale.choice.drink.edit
+				},
+				{
+					op: "select_head",
+					q: this.locale.question.which.drink.delete,
+					mode: "single",
+					next: {
+						op: "confirm",
+						q: this.locale.question.is.delete_this,
+						mode: "delete-head",
 						next: {
-							op: "init"
+							op: "alert",
+							next: {
+								op: "init"
+							}
+						},
+						cancel: {
+							op: "setting"
+						},
+						msg: {
+							success: this.locale.message.success.drink.delete,
+							fail: this.locale.message.fail.drink.delete
 						}
 					},
 					cancel: {
 						op: "setting"
 					},
-					msg: {
-						success: "これを削除したよ",
-						fail: "これの削除に失敗したよ"
-					}
+					text: this.locale.choice.drink.delete
 				},
-				cancel: {
-					op: "setting"
-				},
-				text: "ドリンクの削除"
-			},
-			{
-				op: "init",
-				text: "キャンセル"
-			}
-		]
+				{
+					op: "init",
+					text: this.locale.choice.cancel
+				}
+			]
+		};
 	},
-	job: {
-		type: "job-list",
-		q: "現在のジョブ一覧だよ",
-		a: {
-			next: {
-				op: "confirm",
-				mode: "delete-job",
-				q: "このジョブを消しますか？",
+	get job() {
+		return {
+			type: "job-list",
+			q: this.locale.question.which.job.see,
+			a: {
 				next: {
-					op: "alert",
+					op: "confirm",
+					mode: "delete-job",
+					q: this.locale.question.which.job.delete,
 					next: {
-						op: 'job'
+						op: "alert",
+						next: {
+							op: 'job'
+						}
+					},
+					cancel: {
+						op: "job"
+					},
+					msg: {
+						success: this.locale.message.success.job.delete,
+						fail: this.locale.message.fail.job.delete
 					}
 				},
 				cancel: {
-					op: "job"
-				},
-				msg: {
-					success: "このジョブを消したよ",
-					fail: "このジョブの削除に失敗したよ"
+					op: "init"
 				}
-			},
-			cancel: {
-				op: "init"
 			}
-		}
+		};
 	},
-	add_head: {
-		type: "drink-form",
-		q: "追加するドリンクの情報を入力してね",
-		a: {
-			next: {
-				op: "alert",
-				q: "飲み物を追加したよ",
-				next: {
-					op: 'init'
-				}
-			},
-			msg: {
-				retry: "送信に失敗したよ"
-			}
-		}
-	},
-	edit_head: {
-		type: "drink-form",
-		set(data){
-			this.a = Object.assign({
+	get add_head() {
+		return {
+			type: "drink-form",
+			q: this.locale.question.please.edit_drink_info,
+			a: {
 				next: {
 					op: "alert",
-					q: "飲み物を編集したよ",
+					q: this.locale.message.success.drink.add,
 					next: {
 						op: 'init'
 					}
 				},
 				msg: {
-					retry: "送信に失敗したよ"
+					retry: this.locale.message.fail.transmission
 				}
-			}, data);
-		},
-		q: "ドリンクの情報を編集してね"
+			}
+		};
 	},
-	select_head: {
-		type: "head-list",
-		set(data) {
-			this.q = data.q;
-			this.a = Object.assign({
+	get edit_head() {
+		return {
+			type: "drink-form",
+			a: Object.assign({
+				next: {
+					op: "alert",
+					q: this.locale.message.success.drink.edit,
+					next: {
+						op: 'init'
+					}
+				},
 				msg: {
-					single_select_error: "一つ選んでね",
-					multi_select_error: "一つ以上選んでね",
-					retry: "取得に失敗したよ"
+					retry: this.locale.message.fail.transmission
 				}
-			}, data);
-		}
+			}, this.before),
+			q: this.locale.question.please.edit_drink_info
+		};
 	},
-	alert: {
-		type: "alert",
-		set(data) {
-			this.q = data.q;
-			this.a = Object.assign({}, data, data.next);
-		}
+	get select_head() {
+		return {
+			type: "head-list",
+			q: this.before.q,
+			a: Object.assign({
+				msg: {
+					single_select_error: this.locale.message.fail.select.single,
+					multi_select_error: this.locale.message.fail.select.multi,
+					retry: this.locale.message.fail.get_data
+				}
+			}, this.before)
+		};
 	},
-	confirm: {
-		set(data) {
-			this.type = `${data.mode}-confirm`;
-			this.q = data.q;
-			this.a = data;
-		}
+	get alert() {
+		return {
+			type: "alert",
+			q: this.before.q,
+			a: Object.assign({}, this.before, this.before.next)
+		};
+	},
+	get confirm() {
+		return {
+			type: `${this.before.mode}-confirm`,
+			q: this.before.q,
+			a: this.before
+		};
 	}
 };
